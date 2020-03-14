@@ -17,4 +17,12 @@ public class QuoteTest {
              .body(is("Error, please inform a date."));
     }
 
+	@Test
+    public void testDateParameterIsValidEndpoint() {
+        given()
+          .when().get("/quote/12345")
+          .then()
+             .statusCode(400)
+             .body(is("Error, incorrect date format"));
+    }
 }
