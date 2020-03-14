@@ -36,9 +36,7 @@ public class QuoteResource {
 		sdf.setLenient(false);
 
 		try {
-			Date dt = sdf.parse(date);
-
-			Response quoteResponse = quoteController.requestQuote(dt);
+			Response quoteResponse = quoteController.requestQuote(sdf.parse(date));
 
 			return quoteResponse;
 

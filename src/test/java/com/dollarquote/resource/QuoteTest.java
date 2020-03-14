@@ -32,7 +32,7 @@ public class QuoteTest {
     public void testReturnQuoteEndpoint() {
         given()
           .contentType("application/json")
-          .when().get("/quote/20200314")
+          .when().get("/quote/20200313")
           .then()
           .statusCode(200)
           .body("buyrate", Matchers.not(Matchers.equalTo(0f)), "sellrate", Matchers.not(Matchers.equalTo(0f)));
