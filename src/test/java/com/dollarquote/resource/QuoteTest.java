@@ -2,8 +2,8 @@ package com.dollarquote.resource;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -31,11 +31,10 @@ public class QuoteTest {
 	@Test
     public void testReturnQuoteEndpoint() {
         given()
+          .contentType("application/json")
           .when().get("/quote/20200314")
           .then()
           .statusCode(200)
-          .body("$.size()", is(1),
-                "[0].buyrate", not(0.0),
-                "[0].sellrate", not(0.0));
+          .body("buyrate", Matchers.not(Matchers.equalTo(0f)), "sellrate", Matchers.not(Matchers.equalTo(0f)));
     }
 }

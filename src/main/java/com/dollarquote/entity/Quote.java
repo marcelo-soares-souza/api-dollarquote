@@ -13,30 +13,30 @@ import javax.persistence.Table;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
-@Table( name = "tb_quote" )
+@Table(name = "tb_quote")
 public class Quote extends PanacheEntityBase {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column
-    private LocalDateTime requisitiontimestamp;
+	@Column
+	private LocalDateTime requisitiontimestamp;
 
-    @Column
-    private LocalDate quotedate;
+	@Column
+	private LocalDate quotedate;
 
-    @Column
-    private Double buyrate; 
+	@Column
+	private Double buyrate;
 
-    @Column
-    private Double sellrate;
+	@Column
+	private Double sellrate;
 
-    @Column
-    private LocalDateTime quotedatetime;
-    
-    public Quote() {
-    	
-    }
+	@Column
+	private LocalDateTime quotedatetime;
+
+	public Quote() {
+
+	}
 
 	public Quote(Long id, LocalDateTime requisitiontimestamp, LocalDate quotedate, Double buyrate, Double sellrate,
 			LocalDateTime quotedatetime) {
