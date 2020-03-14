@@ -8,14 +8,13 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 public class QuoteTest {
-
-    @Test
-    public void testHelloEndpoint() {
+	@Test
+    public void testDateParameterEndpoint() {
         given()
           .when().get("/quote")
           .then()
-             .statusCode(200)
-             .body(is("hello"));
+             .statusCode(400)
+             .body(is("Error, please inform a date."));
     }
 
 }
