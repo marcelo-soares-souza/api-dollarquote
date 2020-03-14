@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/quote")
 @Produces(MediaType.APPLICATION_JSON)
-public class Quote {
+public class QuoteResource {
 
 	@GET
 	public Response quote() {
