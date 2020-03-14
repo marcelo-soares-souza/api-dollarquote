@@ -69,6 +69,11 @@
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-rest-client</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-opentracing -->
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-smallrye-opentracing</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
