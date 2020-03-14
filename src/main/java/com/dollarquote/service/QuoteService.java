@@ -1,6 +1,7 @@
 package com.dollarquote.service;
 
 import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -29,32 +30,38 @@ public class QuoteService {
 
 	@Transactional
 	@Counted(name = "requestQuote", description = "How many time Requested Quotes")
-	public Response requestQuote(Date date) {
-		Response response;
-		Format formatter = new SimpleDateFormat("MM-dd-yyyy");
-		List<Value> bcbQuote = bcbService.getQuote(formatter.format(date)).getValue();
+	public Response requestQuote(String quoteDate) throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		sdf.setLenient(false);
 
-		if (bcbQuote.size() > 0) {
-			Double buyRate = bcbQuote.get(0).cotacaoCompra;
-			Double sellRate = bcbQuote.get(0).cotacaoVenda;
+		Response response = Response.ok("No Quote for this day.").status(200).build();
 
-			LocalDate localDate = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
-			LocalDateTime quoteDateTime = LocalDateTime.parse(bcbQuote.get(0).dataHoraCotacao,
-					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
-			LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC);
+		try {
+			Date date = sdf.parse(quoteDate);
 
-			Quote quote = new Quote(null, localDateTime, localDate, buyRate, sellRate, quoteDateTime);
+			Format formatter = new SimpleDateFormat("MM-dd-yyyy");
+			List<Value> bcbQuote = bcbService.getQuote(formatter.format(date)).getValue();
 
-			quote.persist();
+			if (bcbQuote.size() > 0) {
+				Double buyRate = bcbQuote.get(0).cotacaoCompra;
+				Double sellRate = bcbQuote.get(0).cotacaoVenda;
 
-			response = Response.ok(quote).status(200).build();
+				LocalDate localDate = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+				LocalDateTime quoteDateTime = LocalDateTime.parse(bcbQuote.get(0).dataHoraCotacao,
+						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+				LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC);
 
-		} else {
-			response = Response.ok("No Quote for this day.").status(200).build();
+				Quote quote = new Quote(null, localDateTime, localDate, buyRate, sellRate, quoteDateTime);
 
+				quote.persist();
+
+				response = Response.ok(quote).status(200).build();
+
+			}
+		} catch (ParseException e) {
+			throw new IllegalArgumentException("Error: " + e.getMessage());
 		}
 
 		return response;
 	}
-
 }

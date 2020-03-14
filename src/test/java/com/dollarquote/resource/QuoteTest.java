@@ -11,30 +11,18 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTest
 public class QuoteTest {
 	@Test
-    public void testDateParameterEndpoint() {
-        given()
-          .when().get("/quote")
-          .then()
-             .statusCode(400)
-             .body(is("Error, please inform a date."));
-    }
+	public void testDateParameterEndpoint() {
+		given().when().get("/quote").then().statusCode(400).body(is("Error, please inform a date."));
+	}
 
 	@Test
-    public void testDateParameterIsValidEndpoint() {
-        given()
-          .when().get("/quote/12345")
-          .then()
-             .statusCode(400)
-             .body(is("Error, incorrect date format"));
-    }
-	
+	public void testDateParameterIsValidEndpoint() {
+		given().when().get("/quote/12345").then().statusCode(400).body(Matchers.containsString("Error"));
+	}
+
 	@Test
-    public void testReturnQuoteEndpoint() {
-        given()
-          .contentType("application/json")
-          .when().get("/quote/20200313")
-          .then()
-          .statusCode(200)
-          .body("buyrate", Matchers.not(Matchers.equalTo(0f)), "sellrate", Matchers.not(Matchers.equalTo(0f)));
-    }
+	public void testReturnQuoteEndpoint() {
+		given().contentType("application/json").when().get("/quote/20200313").then().statusCode(200).body("buyrate",
+				Matchers.not(Matchers.equalTo(0f)), "sellrate", Matchers.not(Matchers.equalTo(0f)));
+	}
 }
