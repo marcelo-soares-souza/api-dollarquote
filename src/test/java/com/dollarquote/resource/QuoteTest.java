@@ -1,10 +1,12 @@
 package com.dollarquote.resource;
 
-import io.quarkus.test.junit.QuarkusTest;
-import org.junit.jupiter.api.Test;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+
+import org.junit.jupiter.api.Test;
+
+import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
 public class QuoteTest {
@@ -24,5 +26,16 @@ public class QuoteTest {
           .then()
              .statusCode(400)
              .body(is("Error, incorrect date format"));
+    }
+	
+	@Test
+    public void testReturnQuoteEndpoint() {
+        given()
+          .when().get("/quote/20200314")
+          .then()
+          .statusCode(200)
+          .body("$.size()", is(1),
+                "[0].buyrate", not(0.0),
+                "[0].sellrate", not(0.0));
     }
 }
