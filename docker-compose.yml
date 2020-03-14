@@ -1,0 +1,45 @@
+version: '2.1'
+
+services:
+  quarkus:
+    build:
+      context: .
+      dockerfile: src/main/docker/Dockerfile.multistage
+    environment:
+      - DB_URL=jdbc:postgresql://db:5432/devel
+      - DB_USER=devel
+      - DB_PASSWORD=devel
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+    links:
+      - db
+      - jaeger
+    restart: always
+
+  db:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_DB=devel
+      - POSTGRES_USER=devel
+      - POSTGRES_PASSWORD=devel
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devel"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  jaeger: 
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "14268:14268"
+      - "9411:9411"

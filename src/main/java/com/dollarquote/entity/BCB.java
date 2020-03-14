@@ -4,6 +4,10 @@ import java.util.List;
 
 public class BCB {
 	public List<Value> value;
+	
+	public BCB() {
+		
+	}
 
 	public static class Value {
 		public Double cotacaoCompra;
@@ -14,4 +18,6 @@ public class BCB {
 	public List<Value> getValue() {
 		return value;
 	}
+	
+	
 }
