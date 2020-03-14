@@ -13,7 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.dollarquote.controller.QuoteController;
+import com.dollarquote.service.QuoteService;
 
 @Path("/quote")
 @Produces(MediaType.APPLICATION_JSON)
@@ -21,7 +21,7 @@ import com.dollarquote.controller.QuoteController;
 public class QuoteResource {
 
 	@Inject
-	private QuoteController quoteController;
+	private QuoteService quoteController;
 
 	@GET
 	public Response quote() {

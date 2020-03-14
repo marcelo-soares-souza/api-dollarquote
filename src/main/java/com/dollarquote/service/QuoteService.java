@@ -1,4 +1,4 @@
-package com.dollarquote.controller;
+package com.dollarquote.service;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -16,17 +16,19 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.metrics.annotation.Counted;
+
 import com.dollarquote.entity.BCB.Value;
 import com.dollarquote.entity.Quote;
-import com.dollarquote.service.BCBService;
 
 @ApplicationScoped
-public class QuoteController {
+public class QuoteService {
 
 	@Inject
 	private BCBService bcbService;
 
 	@Transactional
+	@Counted(name = "requestQuote", description = "How many time Requested Quotes")
 	public Response requestQuote(Date date) {
 		Response response;
 		Format formatter = new SimpleDateFormat("MM-dd-yyyy");
