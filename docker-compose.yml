@@ -6,9 +6,10 @@ services:
       context: .
       dockerfile: src/main/docker/Dockerfile.multistage
     environment:
-      - DB_URL=jdbc:postgresql://db:5432/devel
+      - DB_URL=jdbc:tracing:postgresql://db:5432/devel
       - DB_USER=devel
       - DB_PASSWORD=devel
+      - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
     depends_on:
       db:
         condition: service_healthy

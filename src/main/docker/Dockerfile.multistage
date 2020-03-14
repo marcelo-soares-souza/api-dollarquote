@@ -7,6 +7,7 @@ RUN chown -R quarkus /usr/src/app
 USER quarkus
 RUN mvn -f /usr/src/app/pom.xml clean package -DskipTests
 
+## Stage 2 : build docker container
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.1
 
 ARG JAVA_PACKAGE=java-1.8.0-openjdk-headless
@@ -36,4 +37,3 @@ EXPOSE 8080
 USER 1001
 
 ENTRYPOINT [ "/deployments/run-java.sh" ]
-
