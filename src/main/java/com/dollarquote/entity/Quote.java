@@ -10,9 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
 @Entity
 @Table( name = "tb_quote" )
-public class Quote {
+public class Quote extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
