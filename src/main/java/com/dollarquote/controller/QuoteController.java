@@ -6,12 +6,14 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.core.Response;
 
 import com.dollarquote.entity.BCB.Value;
@@ -24,6 +26,7 @@ public class QuoteController {
 	@Inject
 	private BCBService bcbService;
 
+	@Transactional
 	public Response requestQuote(Date date) {
 		Response response;
 		Format formatter = new SimpleDateFormat("MM-dd-yyyy");
@@ -34,10 +37,13 @@ public class QuoteController {
 			Double sellRate = bcbQuote.get(0).cotacaoVenda;
 
 			LocalDate localDate = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
-			LocalDateTime localDateTime = LocalDateTime.parse(bcbQuote.get(0).dataHoraCotacao,
+			LocalDateTime quoteDateTime = LocalDateTime.parse(bcbQuote.get(0).dataHoraCotacao,
 					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+			LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC);
 
-			Quote quote = new Quote(1L, localDateTime, localDate, buyRate, sellRate, localDateTime);
+			Quote quote = new Quote(null, localDateTime, localDate, buyRate, sellRate, quoteDateTime);
+
+			quote.persist();
 
 			response = Response.ok(quote).status(200).build();
 
