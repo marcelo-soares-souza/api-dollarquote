@@ -29,7 +29,7 @@ public class Quote {
 
 		try {
 			Date dt = sdf.parse(date);
-			return Response.ok("Ok with date " + dt).status(400).build();
+			return Response.ok("Ok with date " + dt).status(200).build();
 
 		} catch (ParseException e) {
 			return Response.ok("Error, incorrect date format").status(400).build();
