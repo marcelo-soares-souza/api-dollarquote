@@ -71,7 +71,7 @@ docker run -p 5432:5432 --name postgres -e POSTGRES_DB=devel -e POSTGRES_USER=$D
 
 mvn test
 
-** 6.3.** Ambiente Devel
+**6.3.** Ambiente Devel
 
 mvn compile compile quarkus:dev
 
