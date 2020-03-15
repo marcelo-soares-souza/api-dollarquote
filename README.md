@@ -1,30 +1,83 @@
-# api-dollarquote project
+## Microserviço para Cotação de Dolar no BCB
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+### 1. User Story
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+*"Como um cliente do Dollar's Quote eu gostaria de obter a cotação do dólar comercial para compra e venda em uma determinada data."*
 
-## Running the application in dev mode
+- **Ator:** Cliente do Microserviço Dollar's Quote
+- **Ação:** Consultar a cotação do dólar comercial em uma determinada data
+- **Objetivo:** Obter a cotação do dólar comercial para compra e venda
 
-You can run your application in dev mode that enables live coding using:
-```
-./mvnw quarkus:dev
-```
 
-## Packaging and running the application
+### 2. Critérios de Aceitação
 
-The application is packageable using `./mvnw package`.
-It produces the executable `api-dollarquote-1.0-SNAPSHOT-runner.jar` file in `/target` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/lib` directory.
+**2.1.** O Cliente não pode obter a cotação se não informar uma data correta no formato yyyyMMdd (Ex.: 20200310).
 
-The application is now runnable using `java -jar target/api-dollarquote-1.0-SNAPSHOT-runner.jar`.
+**2.2.** Deve retornar a cotação de compra, venda e hora da cotação. O Valor de compra ou venda deve ser maior que 0.0.
 
-## Creating a native executable
+**2.3.** Caso não encontre uma cotação uma mensagem deve informar o cliente
 
-You can create a native executable using: `./mvnw package -Pnative`.
+### 3. Cenários de Testes
 
-Or you can use Docker to build the native executable using: `./mvnw package -Pnative -Dquarkus.native.container-build=true`.
+**3.1.** Verificar a operação se a data não for informada
 
-You can then execute your binary: `./target/api-dollarquote-1.0-SNAPSHOT-runner`
+**3.1.1.** Caso de Teste
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/building-native-image-guide .
+Prioridade de teste: Alta
+Resumo do Teste: Enviar uma solicitação GET (REST) não informando a data de cotação
+Resultados Esperados: Obtenção de uma mensagem de error (404)
+
+**3.2.** Verifique a operação se a data estiver no formato incorreto
+
+**3.2.1.** Caso de Teste
+
+**Prioridade de teste:** Alta
+
+**Resumo do Teste:** Enviar uma solicitação GET (REST) usando um formato incorreto
+
+**Resultados Esperados:** Obtenção de uma mensagem de error (404)
+
+**3.3.** Verifique se a cotação do Dólar é retornada
+
+**3.3.1.** Caso de Teste
+
+**Prioridade de teste:** Alta
+
+**Resumo do Teste:** Enviar uma consulta passando a data para a obtenção da cotação
+
+**Resultados Esperados:** Obtenção da cotação do dólar para Compra, Venda, Data e Hora da Cotação. O Valor de compra ou venda deve ser maior que 0.
+
+**4.** Swagger API
+
+[https://app.swaggerhub.com/apis/marcelo-soares-souza/dollarquote/1.0](https://app.swaggerhub.com/apis/marcelo-soares-souza/dollarquote/1.0)
+
+**5.** Tecnologias
+
+Debian GNU/Linux 10, Java 8 (GraalVM 20.0.0), Quarkus, Panache (ORM), PostgreSQL, Docker, Docker-Compose, Jaeger, Grafana, Prometheus e etc.
+
+**6.** Executando
+
+**6.1.** Pré Requisito (Varíaveis de Ambiente e Banco de Dados PostgreSQL)
+
+export DB_URL="jdbc:tracing:postgresql://localhost:5432/devel"
+
+export DB_USER=devel
+
+export DB_PASSWORD=devel
+
+docker run -p 5432:5432 --name postgres -e POSTGRES_DB=devel -e POSTGRES_USER=$DB_USER -e POSTGRES_PASSWORD=$DB_PASSWORD -d postgres
+
+**6.2.** Teste (Necessita Docker)
+
+mvn test
+
+** 6.3.** Ambiente Devel
+
+mvn compile compile quarkus:dev
+
+OBS: Exemplo de URL (GET): http://localhost:8080/quote/20200312
+
+**6.4.** Produção Completo (Aplicação, Banco de Dados, Jaeger, Grana, Prometheus
+
+docker-compose up --build --force-recreate
+
