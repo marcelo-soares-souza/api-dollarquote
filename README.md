@@ -47,15 +47,15 @@ Resultados Esperados: Obtenção de uma mensagem de error (404)
 
 **Resultados Esperados:** Obtenção da cotação do dólar para Compra, Venda, Data e Hora da Cotação. O Valor de compra ou venda deve ser maior que 0.
 
-**4.** Swagger API
+### 4. Swagger API
 
 [https://app.swaggerhub.com/apis/marcelo-soares-souza/dollarquote/1.0](https://app.swaggerhub.com/apis/marcelo-soares-souza/dollarquote/1.0)
 
-**5.** Tecnologias
+### 5. Tecnologias
 
 Debian GNU/Linux 10, Java 8 (GraalVM 20.0.0), Quarkus, Panache (ORM), PostgreSQL, Docker, Docker-Compose, Jaeger, Grafana, Prometheus e etc.
 
-**6.** Executando
+### 6. Executando
 
 **6.1.** Pré Requisito (Varíaveis de Ambiente e Banco de Dados PostgreSQL)
 
@@ -80,4 +80,3 @@ OBS: Exemplo de URL (GET): http://localhost:8080/quote/20200312
 **6.4.** Produção Completo (Aplicação, Banco de Dados, Jaeger, Grana, Prometheus
 
 docker-compose up --build --force-recreate
-
