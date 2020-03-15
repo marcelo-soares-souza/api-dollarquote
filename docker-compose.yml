@@ -18,6 +18,8 @@ services:
     links:
       - db
       - jaeger
+      - grafana
+      - prometheus
     restart: always
 
   db:
@@ -44,3 +46,19 @@ services:
       - "16686:16686"
       - "14268:14268"
       - "9411:9411"
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    links:
+      - prometheus
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./src/main/resources/prometheus/:/etc/prometheus/
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
